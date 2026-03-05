@@ -11,54 +11,87 @@ type Props = CollectionEntry<'blog'>['data'];
 const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 ---
 
-<html lang="en">
+<html lang="ja">
 	<head>
 		<BaseHead title={title} description={description} />
 		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
+			.article-shell {
+				width: min(1020px, calc(100% - 2rem));
+				padding-top: 2.2rem;
 			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
+
+			.article {
+				border: 1px solid rgb(var(--gray-light));
+				border-radius: 24px;
+				background: rgba(var(--surface), 86%);
 				box-shadow: var(--box-shadow);
 			}
+
+			.hero-image {
+				padding: 0.85rem 0.85rem 0;
+			}
+
+			.hero-image img {
+				width: 100%;
+				aspect-ratio: 21 / 9;
+				object-fit: cover;
+			}
+
+			.hero-image:empty {
+				display: none;
+			}
+
 			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
+				width: min(760px, 100%);
+				margin: 0 auto;
+				padding: clamp(1.35rem, 3vw, 2.3rem);
 				color: rgb(var(--gray-dark));
 			}
+
 			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
+				margin-bottom: 1.5rem;
 			}
+
 			.title h1 {
-				margin: 0 0 0.5em 0;
+				margin: 0 0 0.75rem;
 			}
+
 			.date {
-				margin-bottom: 0.5em;
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.8rem;
+				margin-bottom: 0.5rem;
 				color: rgb(var(--gray));
+				font-size: 0.92rem;
 			}
+
 			.last-updated-on {
-				font-style: italic;
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35rem;
+				padding: 0.14rem 0.5rem;
+				border-radius: 999px;
+				background: rgb(var(--surface-soft));
+				border: 1px solid rgb(var(--gray-light));
+			}
+
+			@media (max-width: 800px) {
+				.article-shell {
+					width: calc(100% - 1rem);
+					padding-top: 1.2rem;
+				}
+
+				.hero-image {
+					padding: 0.6rem 0.6rem 0;
+				}
 			}
 		</style>
 	</head>
 
 	<body>
 		<Header />
-		<main>
-			<article>
+		<main class="article-shell">
+			<article class="article">
 				<div class="hero-image">
 					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
 				</div>
