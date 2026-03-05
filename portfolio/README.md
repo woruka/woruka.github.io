@@ -1,62 +1,70 @@
-# Astro Starter Kit: Blog
+# woruka Portfolio
 
-```sh
-npm create astro@latest -- --template blog
-```
+`woruka.github.io` 用のポートフォリオ兼ブログです。  
+モバイル開発（Flutter / Kotlin / Swift）を軸に、セキュリティ・OSS・キャリア設計の発信を継続するためのサイトとして運用します。
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## このリポジトリの目的
 
-Features:
+- 技術スタックと実務視点を一貫して示せるポートフォリオを育てる
+- セキュリティやモバイル設計の学びを記事として蓄積する
+- OSS やキャリア設計の考えを、検索可能な形で公開する
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+## 技術構成
 
-## 🚀 Project Structure
+- Framework: Astro 5
+- Content: Markdown / MDX（`src/content/blog`）
+- Hosting: GitHub Pages（`main` push で自動デプロイ）
+- CI/CD: GitHub Actions（`.github/workflows/deploy.yml`）
 
-Inside of your Astro project, you'll see the following folders and files:
+## 主要ディレクトリ
 
 ```text
-├── public/
-├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+portfolio/
+├─ public/                    # 画像などの静的アセット
+├─ src/
+│  ├─ components/             # 共通コンポーネント
+│  ├─ content/blog/           # 記事（Markdown / MDX）
+│  ├─ layouts/                # レイアウト
+│  ├─ pages/                  # ルーティングされるページ
+│  └─ consts.ts               # サイト名・説明
+├─ astro.config.mjs           # Astro設定（site URL含む）
+└─ package.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## ローカル開発
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+```sh
+npm install
+npm run dev
+```
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+- 開発サーバー: `http://localhost:4321`
+- 本番ビルド確認:
 
-Any static assets, like images, can be placed in the `public/` directory.
+```sh
+npm run build
+npm run preview
+```
 
-## 🧞 Commands
+## 記事追加手順
 
-All commands are run from the root of the project, from a terminal:
+1. `src/content/blog` に `yyyy-mm-dd-title.md` を追加
+2. frontmatter に `title`, `description`, `pubDate` を設定
+3. 必要なら `heroImage` を指定（`src/assets` 配下）
+4. `npm run build` が通ることを確認して `main` へ push
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## プロフィール更新ポイント
 
-## 👀 Want to learn more?
+- サイトタイトル・説明: `src/consts.ts`
+- トップページ文言: `src/pages/index.astro`
+- Aboutページ: `src/pages/about.astro`
 
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## デプロイ
 
-## Credit
+- `main` ブランチへ push すると、GitHub Actions が `portfolio/dist` を生成
+- 生成物を GitHub Pages にデプロイ
+- 公開先: `https://woruka.github.io`
 
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+## 補足
+
+現在は Astro テンプレート由来のサンプル記事も含まれているため、実運用時は順次置き換えていく想定です。
