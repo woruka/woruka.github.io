@@ -1,0 +1,108 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { SITE_TITLE } from '../consts';
+import {
+	learningCommands,
+	learningExercises,
+	learningIntro,
+	learningSteps,
+} from '../data/learningGuide';
+---
+
+<SiteLayout title={`${SITE_TITLE} | Learning Guide`} description={learningIntro.description}>
+	<section class="surface-card">
+		<span class="section-pill">Learning Guide</span>
+		<h1>{learningIntro.title}</h1>
+		<p class="text-muted lead-copy">{learningIntro.description}</p>
+	</section>
+
+	<section class="surface-card">
+		<span class="section-pill">Edit in order</span>
+		<h2>どこから触るか</h2>
+		<div class="stack-grid-2 section-gap">
+			{
+				learningSteps.map((step) => (
+					<article class="surface-card--soft">
+						<div class="step-meta">
+							<span class="meta-badge">Step {step.id}</span>
+							<span class="meta-badge">{step.path}</span>
+						</div>
+						<h2>{step.title}</h2>
+						<p class="text-muted">{step.summary}</p>
+						<p><strong>変化:</strong> {step.visibleChange}</p>
+					</article>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="surface-card">
+		<span class="section-pill">Commands</span>
+		<h2>開発コマンド</h2>
+		<ul class="code-command-list section-gap">
+			{
+				learningCommands.map((item) => (
+					<li>
+						<code>{item.command}</code>
+						<p class="text-muted">{item.description}</p>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	<section class="surface-card">
+		<span class="section-pill">Practice</span>
+		<h2>小さく試す課題</h2>
+		<div class="stack-grid-2 section-gap">
+			{
+				learningExercises.map((exercise) => (
+					<article class="surface-card--soft">
+						<h2>{exercise.title}</h2>
+						<p><strong>Goal:</strong> {exercise.goal}</p>
+						<p><strong>Hint:</strong> {exercise.hint}</p>
+					</article>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="surface-card">
+		<div class="inline-link-row">
+			<a href="/">Home に戻る</a>
+			<a href="/intro/">技術紹介ページ一覧を見る</a>
+			<a href="/about/">About を編集する</a>
+		</div>
+	</section>
+
+	<style>
+		.lead-copy {
+			max-width: 54ch;
+			margin: 0;
+		}
+
+		.section-gap {
+			margin-top: 1rem;
+		}
+
+		.step-meta {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.45rem;
+			margin-bottom: 0.55rem;
+		}
+
+		.surface-card--soft h2 {
+			margin-bottom: 0.5rem;
+			font-size: 1.08rem;
+		}
+
+		.surface-card--soft p {
+			margin: 0;
+		}
+
+		.surface-card--soft p + p {
+			margin-top: 0.55rem;
+		}
+	</style>
+</SiteLayout>

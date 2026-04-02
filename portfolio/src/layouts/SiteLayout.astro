@@ -1,0 +1,28 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+
+type Props = {
+	title: string;
+	description: string;
+	mainClass?: string;
+};
+
+const { title, description, mainClass = 'page-main page-stack' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<BaseHead title={title} description={description} />
+		<slot name="head" />
+	</head>
+	<body>
+		<Header />
+		<main class={mainClass}>
+			<slot />
+		</main>
+		<Footer />
+	</body>
+</html>

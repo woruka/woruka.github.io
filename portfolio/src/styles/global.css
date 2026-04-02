@@ -61,6 +61,108 @@ main {
 	padding: 3.5rem 0 4.5rem;
 }
 
+.page-main {
+	width: min(1080px, calc(100% - 3rem));
+	margin: 0 auto;
+	padding: 3.5rem 0 4.5rem;
+}
+
+.page-main--narrow {
+	width: min(1020px, calc(100% - 2rem));
+	margin: 0 auto;
+	padding: 2.2rem 0 4.5rem;
+}
+
+.page-stack {
+	display: grid;
+	gap: 1rem;
+}
+
+.surface-card {
+	padding: clamp(1.2rem, 3vw, 2rem);
+	border-radius: 22px;
+	border: 1px solid rgb(var(--gray-light));
+	background: rgba(var(--surface), 84%);
+	box-shadow: var(--box-shadow);
+}
+
+.surface-card--soft {
+	padding: 1rem;
+	border-radius: 16px;
+	border: 1px solid rgb(var(--gray-light));
+	background: rgb(var(--surface-soft));
+}
+
+.section-pill,
+.eyebrow-label {
+	display: inline-block;
+	margin-bottom: 0.8rem;
+	padding: 0.2rem 0.6rem;
+	font-size: 0.74rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--accent);
+	background: rgba(139, 58, 30, 10%);
+	border-radius: 999px;
+}
+
+.text-muted {
+	color: rgb(var(--gray));
+}
+
+.stack-grid-2 {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.85rem;
+}
+
+.stack-grid-3 {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0.85rem;
+}
+
+.inline-link-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.8rem;
+	font-size: 0.92rem;
+}
+
+.meta-badge {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.18rem 0.55rem;
+	border-radius: 999px;
+	font-size: 0.78rem;
+	font-weight: 700;
+	border: 1px solid rgba(139, 58, 30, 24%);
+	background: rgba(139, 58, 30, 10%);
+	color: var(--accent);
+}
+
+.code-command-list {
+	display: grid;
+	gap: 0.75rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.code-command-list li {
+	padding: 0.9rem 1rem;
+	border-radius: 14px;
+	border: 1px solid rgb(var(--gray-light));
+	background: rgba(var(--surface-soft), 72%);
+}
+
+.code-command-list code {
+	display: inline-block;
+	margin-bottom: 0.4rem;
+	font-size: 0.96rem;
+}
+
 h1,
 h2,
 h3,
@@ -171,6 +273,17 @@ hr {
 	main {
 		width: min(1080px, calc(100% - 1.5rem));
 		padding: 2.4rem 0 3.2rem;
+	}
+
+	.page-main,
+	.page-main--narrow {
+		width: calc(100% - 1rem);
+		padding: 2.4rem 0 3.2rem;
+	}
+
+	.stack-grid-2,
+	.stack-grid-3 {
+		grid-template-columns: 1fr;
 	}
 }
 

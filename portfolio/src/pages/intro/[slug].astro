@@ -1,7 +1,5 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Footer from '../../components/Footer.astro';
-import Header from '../../components/Header.astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
 import { SITE_TITLE } from '../../consts';
 import { TECH_STATUS_META, techStacks, type TechStack } from '../../data/techStacks';
 
@@ -19,171 +17,115 @@ type Props = {
 const { tech } = Astro.props as Props;
 const statusMeta = TECH_STATUS_META[tech.status];
 ---
-<!doctype html>
-<html lang="ja">
-	<head>
-		<BaseHead title={`${SITE_TITLE} | ${tech.name} 入門`} description={tech.summary} />
-		<style>
-			.intro-detail-main {
-				display: grid;
-				gap: 1rem;
-			}
 
-			.card {
-				padding: clamp(1.2rem, 3vw, 2rem);
-				border-radius: 22px;
-				border: 1px solid rgb(var(--gray-light));
-				background: rgba(var(--surface), 84%);
-				box-shadow: var(--box-shadow);
-			}
+<SiteLayout
+	title={`${SITE_TITLE} | ${tech.name} 入門`}
+	description={tech.summary}
+>
+	<section class="surface-card">
+		<div class="meta-row">
+			<span class="meta-badge">{statusMeta.label}</span>
+			<span class="meta-badge">{tech.category}</span>
+		</div>
+		<h1>{tech.name} 入門</h1>
+		<p class="text-muted summary">{tech.summary}</p>
+	</section>
 
-			.meta {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 0.5rem;
-				margin-bottom: 0.7rem;
-			}
+	<section class="stack-grid-2">
+		<article class="surface-card--soft panel">
+			<h2>最初に覚えるポイント</h2>
+			<ul>
+				{tech.beginnerPoints.map((point) => <li>{point}</li>)}
+			</ul>
+		</article>
+		<article class="surface-card--soft panel">
+			<h2>最初の 3 ステップ</h2>
+			<ul>
+				{tech.firstSteps.map((step) => <li>{step}</li>)}
+			</ul>
+		</article>
+	</section>
 
-			.badge {
-				display: inline-flex;
-				align-items: center;
-				padding: 0.2rem 0.58rem;
-				border-radius: 999px;
-				font-size: 0.78rem;
-				font-weight: 700;
-				border: 1px solid rgba(139, 58, 30, 24%);
-				background: rgba(139, 58, 30, 10%);
-				color: var(--accent);
-			}
-
-			.summary {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-
-			.point-grid {
-				display: grid;
-				grid-template-columns: repeat(2, minmax(0, 1fr));
-				gap: 0.8rem;
-			}
-
-			.single-panel {
-				padding: 1rem;
-				border: 1px solid rgb(var(--gray-light));
-				border-radius: 14px;
-				background: rgb(var(--surface-soft));
-			}
-
-			.panel {
-				padding: 1rem;
-				border: 1px solid rgb(var(--gray-light));
-				border-radius: 14px;
-				background: rgb(var(--surface-soft));
-			}
-
-			.panel h2 {
-				margin: 0 0 0.55rem;
-				font-size: 1.08rem;
-			}
-
-			.panel ul {
-				margin: 0;
-				padding-left: 1.1rem;
-				display: grid;
-				gap: 0.32rem;
-			}
-
-			.roadmap-list {
-				margin: 0;
-				padding-left: 1rem;
-				display: grid;
-				gap: 0.5rem;
-			}
-
-			.roadmap-list strong {
-				display: inline-block;
-				margin-right: 0.35rem;
-			}
-
-			.resource-list {
-				margin: 0;
-				padding-left: 1rem;
-				display: grid;
-				gap: 0.38rem;
-			}
-
-			.nav-links {
-				display: flex;
-				gap: 0.8rem;
-				flex-wrap: wrap;
-				font-size: 0.92rem;
-			}
-
-			@media (max-width: 920px) {
-				.point-grid {
-					grid-template-columns: 1fr;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<Header />
-		<main class="intro-detail-main">
-			<section class="card">
-				<div class="meta">
-					<span class="badge">{statusMeta.label}</span>
-					<span class="badge">{tech.category}</span>
-				</div>
-				<h1>{tech.name} 入門</h1>
-				<p class="summary">{tech.summary}</p>
+	{
+		tech.roadmap && (
+			<section class="surface-card--soft single-panel">
+				<h2>学習ロードマップ</h2>
+				<ol class="roadmap-list">
+					{tech.roadmap.map((step) => <li><strong>{step.phase}</strong>{step.goal}</li>)}
+				</ol>
 			</section>
-			<section class="point-grid">
-				<article class="panel">
-					<h2>最初に押さえるポイント</h2>
-					<ul>
-						{tech.beginnerPoints.map((point) => <li>{point}</li>)}
-					</ul>
-				</article>
-				<article class="panel">
-					<h2>最初の3ステップ</h2>
-					<ul>
-						{tech.firstSteps.map((step) => <li>{step}</li>)}
-					</ul>
-				</article>
+		)
+	}
+
+	{
+		tech.resources && (
+			<section class="surface-card--soft single-panel">
+				<h2>参考リンク</h2>
+				<ul class="resource-list">
+					{
+						tech.resources.map((resource) => (
+							<li>
+								<a href={resource.url} target="_blank" rel="noreferrer noopener">{resource.label}</a>
+							</li>
+						))
+					}
+				</ul>
 			</section>
-			{
-				tech.roadmap && (
-					<section class="single-panel">
-						<h2>学習ロードマップ</h2>
-						<ol class="roadmap-list">
-							{tech.roadmap.map((step) => <li><strong>{step.phase}</strong>{step.goal}</li>)}
-						</ol>
-					</section>
-				)
-			}
-			{
-				tech.resources && (
-					<section class="single-panel">
-						<h2>参考リンク</h2>
-						<ul class="resource-list">
-							{
-								tech.resources.map((resource) => (
-									<li>
-										<a href={resource.url} target="_blank" rel="noreferrer noopener">{resource.label}</a>
-									</li>
-								))
-							}
-						</ul>
-					</section>
-				)
-			}
-			<section class="card">
-				<div class="nav-links">
-					<a href="/intro/">入門ページ一覧へ戻る</a>
-					<a href="/#tech">Homeの技術スタックへ戻る</a>
-				</div>
-			</section>
-		</main>
-		<Footer />
-	</body>
-</html>
+		)
+	}
+
+	<section class="surface-card">
+		<div class="inline-link-row">
+			<a href="/intro/">技術ページ一覧へ戻る</a>
+			<a href="/#tech">Home の技術スタックへ戻る</a>
+		</div>
+	</section>
+
+	<style>
+		.meta-row {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.5rem;
+			margin-bottom: 0.7rem;
+		}
+
+		.summary {
+			margin: 0;
+		}
+
+		.panel h2 {
+			margin: 0 0 0.55rem;
+			font-size: 1.08rem;
+		}
+
+		.panel ul {
+			margin: 0;
+			padding-left: 1.1rem;
+			display: grid;
+			gap: 0.32rem;
+		}
+
+		.single-panel {
+			padding: 1rem;
+		}
+
+		.roadmap-list {
+			margin: 0;
+			padding-left: 1rem;
+			display: grid;
+			gap: 0.5rem;
+		}
+
+		.roadmap-list strong {
+			display: inline-block;
+			margin-right: 0.35rem;
+		}
+
+		.resource-list {
+			margin: 0;
+			padding-left: 1rem;
+			display: grid;
+			gap: 0.38rem;
+		}
+	</style>
+</SiteLayout>

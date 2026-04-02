@@ -1,139 +1,113 @@
 ---
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
-import BaseHead from '../../components/BaseHead.astro';
-import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
-import Header from '../../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import SiteLayout from '../../layouts/SiteLayout.astro';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 ---
 
-<!doctype html>
-<html lang="ja">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
+<SiteLayout title={SITE_TITLE} description={SITE_DESCRIPTION} mainClass="page-main page-stack blog-main">
+	<section class="surface-card intro">
+		<h1>Blog</h1>
+		<p class="text-muted">モバイル開発、セキュリティ、キャリア設計に関する記録をまとめています。</p>
+	</section>
+	<section>
+		<ul class="post-grid">
+			{
+				posts.map((post, index) => (
+					<li class:list={['surface-card--soft post-card', { featured: index === 0 }]}>
+						<a href={`/blog/${post.id}/`}>
+							{post.data.heroImage && (
+								<Image width={720} height={360} src={post.data.heroImage} alt="" />
+							)}
+							<h4 class="title">{post.data.title}</h4>
+							<p class="date">
+								<FormattedDate date={post.data.pubDate} />
+							</p>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	<style>
+		.blog-main {
+			width: min(1080px, calc(100% - 2rem));
+		}
+
+		.intro p {
+			margin: 0;
+		}
+
+		.post-grid {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.9rem;
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		.post-card {
+			width: calc(50% - 0.45rem);
+		}
+
+		.post-card.featured {
+			width: 100%;
+		}
+
+		.post-card a {
+			display: block;
+			text-decoration: none;
+			color: inherit;
+		}
+
+		.post-card img {
+			width: 100%;
+			aspect-ratio: 16 / 9;
+			object-fit: cover;
+			margin-bottom: 0.7rem;
+		}
+
+		.post-card.featured img {
+			aspect-ratio: 21 / 9;
+		}
+
+		.title {
+			margin: 0 0 0.35rem;
+			color: rgb(var(--black));
+			line-height: 1.25;
+		}
+
+		.post-card.featured .title {
+			font-size: clamp(1.4rem, 3vw, 2.1rem);
+		}
+
+		.date {
+			margin: 0;
+			color: rgb(var(--gray));
+			font-size: 0.88rem;
+		}
+
+		.post-card a:hover .title,
+		.post-card a:hover .date {
+			color: rgb(var(--accent));
+		}
+
+		@media (max-width: 840px) {
 			.blog-main {
-				width: min(1080px, calc(100% - 2rem));
+				width: calc(100% - 1rem);
 			}
 
-			.intro {
-				padding: clamp(1.2rem, 2.5vw, 1.8rem);
-				margin-bottom: 1rem;
-				border-radius: 22px;
-				border: 1px solid rgb(var(--gray-light));
-				background: rgba(var(--surface), 84%);
-				box-shadow: var(--box-shadow);
-			}
-
-			.intro p {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-
-			.post-grid {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 0.9rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-
-			.post-card {
-				width: calc(50% - 0.45rem);
-				padding: 0.8rem;
-				border-radius: 20px;
-				border: 1px solid rgb(var(--gray-light));
-				background: rgba(var(--surface), 84%);
-				box-shadow: var(--box-shadow);
-			}
-
+			.post-card,
 			.post-card.featured {
 				width: 100%;
 			}
-
-			.post-card a {
-				display: block;
-				text-decoration: none;
-				color: inherit;
-			}
-
-			.post-card img {
-				width: 100%;
-				aspect-ratio: 16 / 9;
-				object-fit: cover;
-				margin-bottom: 0.7rem;
-			}
-
-			.post-card.featured img {
-				aspect-ratio: 21 / 9;
-			}
-
-			.title {
-				margin: 0 0 0.35rem;
-				color: rgb(var(--black));
-				line-height: 1.25;
-			}
-
-			.post-card.featured .title {
-				font-size: clamp(1.4rem, 3vw, 2.1rem);
-			}
-
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-				font-size: 0.88rem;
-			}
-
-			.post-card a:hover .title,
-			.post-card a:hover .date {
-				color: rgb(var(--accent));
-			}
-
-			@media (max-width: 840px) {
-				.blog-main {
-					width: calc(100% - 1rem);
-				}
-
-				.post-card,
-				.post-card.featured {
-					width: 100%;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<Header />
-		<main class="blog-main">
-			<section class="intro">
-				<h1>Blog</h1>
-				<p>モバイル開発、セキュリティ、キャリア設計に関する実践メモをまとめています。</p>
-			</section>
-			<section>
-				<ul class="post-grid">
-					{
-						posts.map((post, index) => (
-							<li class:list={['post-card', { featured: index === 0 }]}>
-								<a href={`/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt="" />
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
-		</main>
-		<Footer />
-	</body>
-</html>
+		}
+	</style>
+</SiteLayout>

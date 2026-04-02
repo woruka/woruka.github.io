@@ -1,37 +1,25 @@
 # woruka Portfolio
 
-`woruka.github.io` 用のポートフォリオ兼ブログです。  
-モバイル開発（Flutter / Kotlin / Swift）を軸に、セキュリティ・OSS・キャリア設計の発信を継続するためのサイトとして運用します。
+`woruka.github.io` 用の Astro サイトです。
 
-## このリポジトリの目的
+ポートフォリオとして使いながら、Astro 学習にも使えるように `learn` ページと対応ドキュメントを入れています。
 
-- 技術スタックと実務視点を一貫して示せるポートフォリオを育てる
-- セキュリティやモバイル設計の学びを記事として蓄積する
-- OSS やキャリア設計の考えを、検索可能な形で公開する
+## 何をどこで学ぶか
 
-## 技術構成
+- トップページの構成を読む
+  - `src/pages/index.astro`
+- 学習ガイドを見る
+  - `src/pages/learn.astro`
+- 学習手順の元データを見る
+  - `src/data/learningGuide.ts`
+- 技術紹介のデータを変える
+  - `src/data/techStacks.ts`
+- 更新メモを追加する
+  - `src/data/memos.ts`
+- 共通デザインを変える
+  - `src/styles/global.css`
 
-- Framework: Astro 5
-- Content: Markdown / MDX（`src/content/blog`）
-- Hosting: GitHub Pages（`main` push で自動デプロイ）
-- CI/CD: GitHub Actions（`.github/workflows/deploy.yml`）
-
-## 主要ディレクトリ
-
-```text
-portfolio/
-├─ public/                    # 画像などの静的アセット
-├─ src/
-│  ├─ components/             # 共通コンポーネント
-│  ├─ content/blog/           # 記事（Markdown / MDX）
-│  ├─ layouts/                # レイアウト
-│  ├─ pages/                  # ルーティングされるページ
-│  └─ consts.ts               # サイト名・説明
-├─ astro.config.mjs           # Astro設定（site URL含む）
-└─ package.json
-```
-
-## ローカル開発
+## 開発コマンド
 
 ```sh
 npm install
@@ -39,32 +27,66 @@ npm run dev
 ```
 
 - 開発サーバー: `http://localhost:4321`
-- 本番ビルド確認:
+
+本番確認:
 
 ```sh
 npm run build
 npm run preview
 ```
 
-## 記事追加手順
+## 学習の進め方
 
-1. `src/content/blog` に `yyyy-mm-dd-title.md` を追加
-2. frontmatter に `title`, `description`, `pubDate` を設定
-3. 必要なら `heroImage` を指定（`src/assets` 配下）
-4. `npm run build` が通ることを確認して `main` へ push
+### Step 1. Home を変える
 
-## プロフィール更新ポイント
+最初は `src/pages/index.astro` の hero セクションだけを編集してください。
+最初の差分が小さいので、Astro のテンプレート構造を掴みやすいです。
 
-- サイトタイトル・説明: `src/consts.ts`
-- トップページ文言: `src/pages/index.astro`
-- Aboutページ: `src/pages/about.astro`
+### Step 2. Learn ページを読む
 
-## デプロイ
+`/learn/` には、どのファイルを触ると何が変わるかを整理しています。
+実装側は `src/pages/learn.astro` と `src/data/learningGuide.ts` です。
 
-- `main` ブランチへ push すると、GitHub Actions が `portfolio/dist` を生成
-- 生成物を GitHub Pages にデプロイ
+### Step 3. データ駆動の変更を試す
+
+次に次のファイルを触ると、ページ構成を崩さずに表示を変えられます。
+
+1. `src/data/techStacks.ts`
+2. `src/data/memos.ts`
+3. `src/data/learningGuide.ts`
+
+## 実装方針
+
+- Astro の標準的な `src/pages`, `src/components`, `src/data` 構成を維持する
+- 文章や一覧データは `src/data` へ寄せる
+- 学習導線は `/learn/` に集約する
+- トップページから学習導線へすぐ行けるようにする
+
+## 主な構成
+
+```text
+portfolio/
+├─ public/
+├─ src/
+│  ├─ components/
+│  ├─ content/blog/
+│  ├─ data/
+│  │  ├─ learningGuide.ts
+│  │  ├─ memos.ts
+│  │  └─ techStacks.ts
+│  ├─ pages/
+│  │  ├─ index.astro
+│  │  ├─ learn.astro
+│  │  ├─ about.astro
+│  │  └─ intro/
+│  └─ styles/
+│     └─ global.css
+├─ astro.config.mjs
+└─ package.json
+```
+
+## 公開
+
+- Hosting: GitHub Pages
 - 公開先: `https://woruka.github.io`
-
-## 補足
-
-現在は Astro テンプレート由来のサンプル記事も含まれているため、実運用時は順次置き換えていく想定です。
+- `main` への push を基点にデプロイする想定です
